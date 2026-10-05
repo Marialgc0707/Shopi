@@ -5,7 +5,7 @@ import MyAccount from '../MyAccount'
 import MyOrder from '../MyOrder'
 import MyOrders from '../MyOrders'
 import NotFound from '../NotFound'
-import SignIn from '../SignIn'
+import SignIn from '../Signin'
 import Navbar from "../../Components/Navbar"
 import CheckoutSideMenu from '../../Components/CheckoutSideMenu'
 import './App.css'
