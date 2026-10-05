@@ -1,5 +1,11 @@
-.product-detail {
-  width: 360px;
+.Checkout-side-menu {
+  width: 100%;
   height: calc(100vh - 68px);
   top: 68px;
+}
+
+@media (min-width: 640px) {
+  .Checkout-side-menu {
+    width: 360px;
+  }
 }

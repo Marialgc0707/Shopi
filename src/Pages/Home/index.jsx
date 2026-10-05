@@ -27,15 +27,13 @@ function Home() {
         <h1 className='text-xl font-medium'>Exclusive Products</h1>
       </div>
       <input
-        type="text"
-        placeholder='Search a product'
-        className='p-4 mb-4 border border-black rounded-lg w-80 focus:outline-none'
-        onChange={(event) => context.setSearchByTitle(event.target.value)} />
-      <div className='grid w-full max-w-screen-lg grid-cols-4 gap-4'>
-    
-         {renderView()}
-     
-      </div>
+  type="text"
+  placeholder='Search a product'
+  className='w-11/12 max-w-sm p-4 mb-4 border border-black rounded-lg focus:outline-none'
+  onChange={(event) => context.setSearchByTitle(event.target.value)} />
+<div className='grid w-full max-w-screen-lg grid-cols-2 gap-4 px-4 md:grid-cols-3 lg:grid-cols-4'>
+  {renderView()}
+</div>
       <ProductDetail />
     </Layout>
   )
