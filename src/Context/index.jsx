@@ -28,18 +28,35 @@ export const ShoppingCartProvider = ({children}) => {
   // Get products
   const [items, setItems] = useState(null)
   const [filteredItems, setFilteredItems] = useState(null)
-
+  const [error, setError] = useState(null)
+  const [reloadKey, setReloadKey] = useState(0)
   // Get products by title
   const [searchByTitle, setSearchByTitle] = useState(null)
 
   // Get products by category
   const [searchByCategory, setSearchByCategory] = useState(null)
 
-  useEffect(() => {
-    fetch('https://api.escuelajs.co/api/v1/products')
-      .then(response => response.json())
-      .then(data => setItems(data))
-  }, [])
+ useEffect(() => {
+  const controller = new AbortController()
+  setError(null)
+
+  fetch('https://api.escuelajs.co/api/v1/products', { signal: controller.signal })
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      return response.json()
+    })
+    .then(data => {
+      if (!Array.isArray(data)) throw new Error('Unexpected response')
+      setItems(data)
+    })
+    .catch(err => {
+      if (err.name === 'AbortError') return
+      console.error('Error loading products:', err)
+      setError(err.message)
+    })
+
+  return () => controller.abort()
+}, [reloadKey])
 
   const filteredItemsByTitle = (items, searchByTitle) => {
     return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
@@ -96,7 +113,9 @@ export const ShoppingCartProvider = ({children}) => {
       setSearchByTitle,
       filteredItems,
       searchByCategory,
-      setSearchByCategory
+      setSearchByCategory,
+      error,
+      retry: () => setReloadKey(key => key + 1)
     }}>
       {children}
     </ShoppingCartContext.Provider>
